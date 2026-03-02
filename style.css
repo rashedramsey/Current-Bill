@@ -1,0 +1,44 @@
+/* Custom Utility Classes */
+.form-input {
+    width: 100%;
+    padding: 12px;
+    background-color: #f8fafc;
+    border-radius: 8px;
+    border: 2px solid transparent;
+    transition: border-color 0.2s;
+}
+
+.form-input:focus {
+    border-color: #3b82f6;
+    outline: none;
+}
+
+.btn-primary {
+    margin-top: 24px;
+    width: 100%;
+    background-color: #2563eb;
+    color: white;
+    padding: 16px;
+    border-radius: 12px;
+    font-weight: 900;
+    font-size: 1.125rem;
+    box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.2);
+}
+
+.btn-primary:hover {
+    background-color: #1d4ed8;
+}
+
+.apt-card {
+    background-color: #f8fafc;
+    padding: 16px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+}
+
+/* Chrome, Safari, Edge, Opera: Hide number arrows */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
