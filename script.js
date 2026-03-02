@@ -140,3 +140,43 @@ function deleteEntry(index) {
         renderHistory();
     }
 }
+
+
+function renderHistory() {
+    const history = JSON.parse(localStorage.getItem('building_bills_final')) || [];
+    const tbody = document.getElementById('historyBody');
+    tbody.innerHTML = '';
+
+    history.forEach((monthGroup, mIndex) => {
+        monthGroup.details.forEach((row, rIndex) => {
+            const isFirst = rIndex === 0;
+            tbody.innerHTML += `
+                <tr class="${isFirst ? 'border-t-4 border-slate-200' : 'border-t border-slate-100'} hover:bg-slate-50 transition-colors">
+                    <td class="p-4 border-r font-bold text-slate-800 bg-slate-50">${isFirst ? monthGroup.month : ''}</td>
+                    
+                    <td class="p-4 border-r font-semibold text-blue-600">${row.apt}</td>
+                    
+                    <td class="p-4 border-r text-center text-slate-500">${row.prev}</td>
+                    <td class="p-4 border-r text-center text-slate-500">${row.curr}</td>
+                    
+                    <td class="p-4 border-r text-center font-bold text-slate-800">${row.used}</td>
+                    
+                    <td class="p-4 border-r text-center text-slate-400">${isFirst ? monthGroup.perUnitRate : ''}</td>
+                    
+                    <td class="p-4 border-r text-center font-bold text-blue-700 bg-blue-50/50">
+                        ${isFirst ? monthGroup.totalCash + ' BDT' : ''}
+                    </td>
+
+                    <td class="p-4 border-r text-center font-black text-slate-900">${row.billAmount} BDT</td>
+                    
+                    ${isAdmin && isFirst ? `
+                        <td class="p-4 text-center" rowspan="4">
+                            <button onclick="deleteEntry(${mIndex})" class="bg-red-50 text-red-500 px-3 py-1 rounded-lg hover:bg-red-500 hover:text-white transition-all font-bold">Delete</button>
+                        </td>
+                    ` : (isAdmin ? '<td></td>' : '')}
+                </tr>
+            `;
+        });
+    });
+}
+
