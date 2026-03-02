@@ -40,26 +40,29 @@
             </button>
         </section>
 
-        <section class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
-            <h2 class="text-xl font-bold text-slate-800 mb-6">Live Billing History</h2>
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse min-w-[900px]">
-                    <thead class="bg-slate-50 text-slate-500 text-[10px] uppercase tracking-widest font-bold">
-                        <tr>
-                            <th class="p-4 border-b">Month</th>
-                            <th class="p-4 border-b">Apt</th>
-                            <th class="p-4 border-b text-center">Prev Reading</th>
-                            <th class="p-4 border-b text-center">Curr Reading</th>
-                            <th class="p-4 border-b text-center">Units Used</th>
-                            <th class="p-4 border-b text-center">Rate (BDT)</th>
-                            <th class="p-4 border-b text-center">Total Bill</th>
-                            <th id="adminHead" class="hidden p-4 border-b text-center text-red-500">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="historyBody" class="text-sm"></tbody>
-                </table>
-            </div>
-        </section>
+        <section class="bg-white p-4 md:p-6 rounded-3xl shadow-sm border border-slate-200">
+    <h2 class="text-xl font-bold text-slate-800 mb-6 flex items-center">
+        <span class="bg-green-100 p-2 rounded-lg mr-3">📊</span> Billing History
+    </h2>
+    <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse min-w-[1000px]">
+            <thead class="bg-slate-800 text-white text-[10px] uppercase tracking-widest font-bold">
+                <tr>
+                    <th class="p-4 border-b border-slate-700">Month</th>
+                    <th class="p-4 border-b border-slate-700">Apt</th>
+                    <th class="p-4 border-b border-slate-700 text-center">Prev Reading</th>
+                    <th class="p-4 border-b border-slate-700 text-center">Curr Reading</th>
+                    <th class="p-4 border-b border-slate-700 text-center">Units Used</th>
+                    <th class="p-4 border-b border-slate-700 text-center">Rate (BDT)</th>
+                    <th class="p-4 border-b border-slate-700 text-center bg-slate-700">Total Recharge</th>
+                    <th class="p-4 border-b border-slate-700 text-center">Individual Bill</th>
+                    <th id="adminHead" class="hidden p-4 border-b border-slate-700 text-center text-red-400">Action</th>
+                </tr>
+            </thead>
+            <tbody id="historyBody" class="text-sm"></tbody>
+        </table>
+    </div>
+</section>
     </div>
 
     <div id="loginModal" class="modal-overlay">
