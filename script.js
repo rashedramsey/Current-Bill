@@ -1,3 +1,21 @@
+// YOUR ACTUAL FIREBASE CONFIG FROM THE IMAGE
+const firebaseConfig = {
+    apiKey: "AIzaSyDnJcgtP1dXXYz7V00BBtv1_Mj82U1KWyM",
+    authDomain: "building-bill.firebaseapp.com",
+    projectId: "building-bill",
+    databaseURL: "https://building-bill-default-rtdb.firebaseio.com", // standard format for Firebase
+    storageBucket: "building-bill.firebasestorage.app",
+    messagingSenderId: "833538590060",
+    appId: "1:833538590060:web:370793545cf6ad4fd1df49",
+    measurementId: "G-0PGD8WCDS7"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
+
+// ... the rest of your script.js code follows here ...
+
 // SET YOUR CREDENTIALS HERE
 const VALID_ID = "rashedramsey";
 const VALID_PASS = "RASHED1234";
