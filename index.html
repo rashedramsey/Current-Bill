@@ -1,4 +1,38 @@
-<section class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Building 9 Bill Portal</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 font-sans min-h-screen p-4">
+    <div class="max-w-4xl mx-auto space-y-6">
+        
+        <div class="text-center py-6 bg-white rounded-2xl shadow-sm border border-slate-200">
+            <h1 class="text-3xl font-extrabold text-slate-800">Building 9 Bill Portal</h1>
+            <p class="text-slate-500">DESCO Prepaid Meter Manager</p>
+        </div>
+
+        <div class="flex justify-end gap-2">
+            <button id="loginBtn" onclick="loginAdmin()" class="bg-slate-800 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-slate-700">Admin Login</button>
+            <button id="logoutBtn" onclick="logoutAdmin()" class="hidden bg-red-500 text-white px-4 py-2 rounded-lg text-sm font-medium">Logout</button>
+        </div>
+
+        <section id="adminPanel" class="hidden bg-white p-6 rounded-2xl shadow-md border-2 border-blue-500">
+            <h2 class="text-xl font-bold text-blue-600 mb-6">Enter Monthly Readings</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="col-span-1 md:col-span-2">
+                    <label class="block text-sm font-bold mb-1">Total Monthly Recharge (BDT)</label>
+                    <input type="number" id="totalCash" class="form-input" placeholder="0.00">
+                </div>
+                <div id="aptInputs" class="grid grid-cols-1 md:grid-cols-2 gap-4 col-span-1 md:col-span-2"></div>
+            </div>
+            <button onclick="calculateAndSave()" class="btn-primary">POST MONTHLY BILL</button>
+        </section>
+
+        <section class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
     <div class="flex justify-between items-center mb-4">
         <h2 class="text-xl font-bold text-slate-800">Billing History</h2>
         <span id="statusLabel" class="text-xs text-slate-400 italic">Viewer Mode</span>
@@ -20,3 +54,8 @@
         </table>
     </div>
 </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
