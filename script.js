@@ -1,5 +1,5 @@
 // CONFIGURATION
-const ADMIN_PASS = "admin123"; // CHANGE YOUR PASSWORD HERE
+const ADMIN_PASS = "Rr1615400"; // CHANGE YOUR PASSWORD HERE
 const apts = ['9A', '9B', '9C', '9D'];
 
 // Initial Load
