@@ -1,20 +1,88 @@
-// YOUR ACTUAL FIREBASE CONFIG FROM THE IMAGE
-const firebaseConfig = {
-    apiKey: "AIzaSyDnJcgtP1dXXYz7V00BBtv1_Mj82U1KWyM",
-    authDomain: "building-bill.firebaseapp.com",
-    projectId: "building-bill",
-    databaseURL: "https://building-bill-default-rtdb.firebaseio.com", // standard format for Firebase
-    storageBucket: "building-bill.firebasestorage.app",
-    messagingSenderId: "833538590060",
-    appId: "1:833538590060:web:370793545cf6ad4fd1df49",
-    measurementId: "G-0PGD8WCDS7"
-};
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-const database = firebase.database();
+const SUPABASE_URL = 'https://ipdsfyydgqqfxdadnaru.supabase.co'; //
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlwZHNmeXlkZ3FxZnhkYWRuYXJ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0NzU1MzMsImV4cCI6MjA4ODA1MTUzM30.2lGTSuFYMY1FsekS03bUjSJ-_hHD9LvsAQuHz3liWYI'; // Use the full 'Anon Key' from your image
 
-// ... the rest of your script.js code follows here ...
+const supabase = lib.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// ADMIN LOGIN 
+const VALID_ID = "rashedramsey";
+const VALID_PASS = "RASHED1234";
+const apts = ['9A', '9B', '9C', '9D'];
+let isAdmin = false;
+
+// --- DATABASE FUNCTIONS ---
+
+// 1. Fetch History from Supabase
+async function fetchHistory() {
+    const { data, error } = await supabase
+        .from('bills')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+    if (error) {
+        console.error('Error fetching data:', error);
+    } else {
+        renderHistory(data);
+    }
+}
+
+// 2. Save New Bill to Supabase
+async function calculateAndSave() {
+    const totalCash = parseFloat(document.getElementById('totalCash').value);
+    let totalUnits = 0;
+    let aptDetails = [];
+
+    for (let apt of apts) {
+        const prev = parseFloat(document.getElementById(`prev-${apt}`).value) || 0;
+        const curr = parseFloat(document.getElementById(`curr-${apt}`).value) || 0;
+        const used = curr - prev;
+        aptDetails.push({ apt, prev, curr, used });
+        totalUnits += used;
+    }
+
+    if (totalUnits === 0 || isNaN(totalCash)) return alert("Please enter valid data.");
+
+    const rate = (totalCash / totalUnits).toFixed(4);
+    const monthStr = new Date().toLocaleDateString('en-GB', { month: 'short', year: 'numeric' });
+
+    const finalDetails = aptDetails.map(item => ({
+        ...item,
+        billAmount: (item.used * rate).toFixed(2)
+    }));
+
+    // Insert into Supabase table
+    const { error } = await supabase
+        .from('bills')
+        .insert([{ 
+            month: monthStr, 
+            total_recharge: totalCash, 
+            per_unit_rate: rate,
+            bill_data: finalDetails 
+        }]);
+
+    if (error) {
+        alert("Error saving to cloud: " + error.message);
+    } else {
+        alert("Bill Saved to Cloud Successfully!");
+        fetchHistory();
+        logoutAdmin();
+    }
+}
+
+// 3. Delete Record
+async function deleteEntry(id) {
+    if (confirm("Delete this record permanently?")) {
+        const { error } = await supabase
+            .from('bills')
+            .delete()
+            .eq('id', id);
+        
+        if (!error) fetchHistory();
+    }
+}
+
+// Initial fetch on page load
+document.addEventListener('DOMContentLoaded', fetchHistory);
 
 // SET YOUR CREDENTIALS HERE
 const VALID_ID = "rashedramsey";
