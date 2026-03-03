@@ -1,32 +1,6 @@
 
-const SUPABASE_URL = 'https://ipdsfyydgqqfxdadnaru.supabase.co'; //
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlwZHNmeXlkZ3FxZnhkYWRuYXJ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0NzU1MzMsImV4cCI6MjA4ODA1MTUzM30.2lGTSuFYMY1FsekS03bUjSJ-_hHD9LvsAQuHz3liWYI'; // Use the full 'Anon Key' from your image
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyoVU3gqPPbR6rcwS4zQQADE_HpeUV4bv9nT7t4o230hcuDAsNM8wPHbRLmovyUS1NlfQ/exec';
 
-const supabase = lib.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-// ADMIN LOGIN 
-const VALID_ID = "rashedramsey";
-const VALID_PASS = "RASHED1234";
-const apts = ['9A', '9B', '9C', '9D'];
-let isAdmin = false;
-
-// --- DATABASE FUNCTIONS ---
-
-// 1. Fetch History from Supabase
-async function fetchHistory() {
-    const { data, error } = await supabase
-        .from('bills')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-    if (error) {
-        console.error('Error fetching data:', error);
-    } else {
-        renderHistory(data);
-    }
-}
-
-// 2. Save New Bill to Supabase
 async function calculateAndSave() {
     const totalCash = parseFloat(document.getElementById('totalCash').value);
     let totalUnits = 0;
@@ -40,34 +14,40 @@ async function calculateAndSave() {
         totalUnits += used;
     }
 
-    if (totalUnits === 0 || isNaN(totalCash)) return alert("Please enter valid data.");
-
     const rate = (totalCash / totalUnits).toFixed(4);
     const monthStr = new Date().toLocaleDateString('en-GB', { month: 'short', year: 'numeric' });
 
-    const finalDetails = aptDetails.map(item => ({
-        ...item,
-        billAmount: (item.used * rate).toFixed(2)
-    }));
+    const payload = {
+        month: monthStr,
+        totalCash: totalCash,
+        perUnitRate: rate,
+        details: aptDetails.map(item => ({
+            ...item,
+            billAmount: (item.used * rate).toFixed(2)
+        }))
+    };
 
-    // Insert into Supabase table
-    const { error } = await supabase
-        .from('bills')
-        .insert([{ 
-            month: monthStr, 
-            total_recharge: totalCash, 
-            per_unit_rate: rate,
-            bill_data: finalDetails 
-        }]);
+    // Send data to Google Sheets
+    const response = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify(payload)
+    });
 
-    if (error) {
-        alert("Error saving to cloud: " + error.message);
-    } else {
-        alert("Bill Saved to Cloud Successfully!");
+    if (response.ok) {
+        alert("Data saved to Google Sheets!");
         fetchHistory();
-        logoutAdmin();
     }
 }
+
+async function fetchHistory() {
+    const response = await fetch(SCRIPT_URL);
+    const data = await response.json();
+    
+    // Google Sheets returns an array of arrays. 
+    // You will need to map this data to your renderHistory function.
+    renderHistory(data); 
+}
+
 
 // 3. Delete Record
 async function deleteEntry(id) {
